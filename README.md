@@ -104,4 +104,35 @@
 - **Cookies**:
   - I cookies sono piccoli pezzi di dati che un server invia al browser, il quale può salvarli e inviarli al server tramite successive richieste.
 
-Arrivato al [video 43](https://www.youtube.com/watch?v=5_cJFYZSiDM&list=PLC3y8-rFHvwjOKd6gdf4QtV1uYNiQnruI&index=43)
+- **Gestione del caching**:
+Quando si utilizza il metodo GET con l'oggetto `response`, i gestori di route sono cachati di default. Tuttavia, per evitare il caching, ci sono vari modi:
+  - Configurare la dynamic mode scegliendo `force-dynamic` al posto di `auto`, in modo da eseguire il gestore ad ogni richiesta dell'utente.
+  - Usare l'oggetto `request` con il metodo GET.
+  - Usare funzioni dinamiche come `headers()` e `cookies()`.
+  - Usare altri metodi HTTP al posto di GET.
+
+- **Middleware**:
+  I middleware permettono di intercettare e controllare il flusso di richieste e risposte, migliorando funzionalità quali ridirezionamento, riscrittura URL, autenticazione, gestione di headers e cookies e così via. Vanno indicati nel file `middleware.ts` o `middleware.js` nella cartella `src` e permettono di specificare in quali path saranno attivi tramite custom matcher config e dichiarazioni condizionali.
+
+- **CSR (Client-Side Rendering)**:
+  Il codice del componente è trasformato in una UI direttamente nel browser, questo porta a problemi di velocità e di SEO siccome si ha un div principale gestito tutto dal browser.
+
+- **SSR (Server-Side Rendering)**:
+  Il rendering avviene lato server, risolvendo i problemi del CSR ma richiedendo l'hydration lato client che avviene in maniera atomica quando tutto l'albero dei componenti nel browser è identico a quello generato dal server. Ciò rende SSR consigliato per renderizzare pagine sulla base delle richieste utente e per contenuti personalizzati come ad esempio i feed dei social media che dipendono dall'utente loggato, ma prima del rendering è necessario attendere il fetching che i componenti richiedono. Questo crea un problema a cascata per cui tutto deve essere pronto prima che l'utente possa eseguire interazioni.
+
+- **SSG (Static-Site Generation)**:
+  Avviene in fase di build quando l'applicazione viene deployata sul server, quindi le pagine vengono già renderizzate. Ciò rende SSG ideale per contenuti che non variano spesso, come i post dei blog.
+
+- **Hydration**:
+  React prende il controllo del browser e ricostruisce l'albero dei componenti sulla base dell'HTML servito, inserendo gli elementi interattivi e collegando a loro la logica JS. Questo implica l'inizializzazione dello stato, il collegamento di gestori di eventi e in generale l'impostazione delle funzionalità dinamiche.
+
+- **Componente Suspense per SSR**:
+  Il componente Suspense per SSR consente lo streaming HTML nel server e l'hydration selettiva nel client. Questo consente di non dover attendere che venga fetchato tutto per poter mostrare qualcosa e renderlo interattivo, inoltre è possibile integrare le sezioni che rallenterebbero l'HTML iniziale senza dover attendere che ciò avvenga.
+
+- **Code Splitting**:
+  Il code splitting si applica tramite `React.lazy` e permette di indicare specifici segmenti di codice come non immediatamente necessari per il caricamento, al fine di segnalare al bundler di segregarli in tags script separati.
+
+- **RSC (React Server Components)**:
+  RSC è un'architettura pensata per avere sia componenti client che server. L'app router in Next.js è costruito attorno a questa architettura. Rispetto ai classici componenti client, i componenti server riguardano codice che non viene mai scaricato dal client, riducendo quindi la dimensione del bundle, permettendo l'accesso diretto a risorse lato server, migliorando la sicurezza, migliorando l'efficienza del data fetching, permettendo caching dovuto al rendering lato server, velocizzando il caricamento della pagina e l'FCP (first contentful paint), migliorando la SEO e lo streaming in blocchi. I RSC non possono gestire direttamente clicks e interazioni.
+
+Fatto fino al [video 49](https://www.youtube.com/watch?v=5h-e5hNKx-c&list=PLC3y8-rFHvwjOKd6gdf4QtV1uYNiQnruI&index=49) compreso.
