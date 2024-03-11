@@ -3,11 +3,13 @@
 - **Il meccanismo di routing è basato sul file system**: quindi gli URL accessibili dipendono da file e cartelle.
 
 - **Next.js fornisce Server Side Rendering (SSR, elaborazione lato server) e Static Site Generation (SSG, elaborazione in fase di build)**:
+
   - Client Side Rendering (CSR) è inizialmente più lento di SSR, ma le successive richieste sono più veloci con CSR perché SSR farà un refresh di pagina.
   - In quanto a SEO, SSR è migliore di CSR.
   - SSG è il più veloce e migliore in quanto a SEO.
 
 - **Metodi di fetching**:
+
   - `getStaticProps()` è per SSG e si usa insieme a `getStaticPaths()` per indicare a Next.js di generare i vari percorsi (routes) per le varie pagine (si pensi a un blog che ha una pagina per ciascun post).
   - `getServerSideProps()` è per SSR.
 
@@ -18,25 +20,31 @@
 [# Playlist 2](https://www.youtube.com/playlist?list=PLC3y8-rFHvwjOKd6gdf4QtV1uYNiQnruI)
 
 - **In Next.js, tutti i componenti sono componenti server di default**:
+
   - Possono eseguire tasks come letture di file e fetching di dati da database, ma non possono usare hooks o manipolare interazioni dell'utente.
   - Per creare componenti client, si utilizza "use client" all'inizio.
 
 - **Le route devono essere tutte nella cartella app**:
+
   - Ogni file corrispondente a una route deve avere estensione `.tsx` o `.js`.
   - Ogni cartella corrisponde a un segmento di path nell'URL.
 
 - **Cartelle nascoste**:
+
   - Iniziano con `_` e si usano per separare la logica della UI da quella di routing e per organizzare i file internamente al progetto e nell'editor, oltre che per evitare eventuali conflitti con convenzioni future di Next.js.
   - Se si vuole usare l'underscore negli URL segments, la cartella deve iniziare con `%5F`.
 
 - **Gruppi di cartelle**:
+
   - Composti da cartelle il cui nome è compreso tra parentesi tonde.
   - Servono per organizzare i file senza modificare gli URL.
 
 - **Pagina not-found**:
+
   - Di default esiste una pagina not-found che si può sovrascrivere
 
 - **Metadata API**:
+
   - Permette di definire metadata per ogni pagina.
   - Si possono esportare un oggetto metadata statico o una funzione `generateMetadata` dinamica.
   - Sia layout.tsx che page.tsx possono esportare metadata. Nel primo caso, si applicano a tutte le pagine che usano quel layout, nel secondo caso invece si applicano alla singola pagina.
@@ -45,9 +53,11 @@
   - Il title di default è di fallback per i route segments figli che non specificano un title, il title di template permette di indicare per i route segments figli eventuale prefisso e suffisso da usare nel title, mentre il title absolute permette di ignorare il title di template.
 
 - **next/router**:
+
   - Permette di utilizzare le funzioni `push`, `replace`, `back`, `forward`.
 
 - **File speciali**:
+
   - `page.tsx`
   - `layout.tsx`
   - `template.tsx`
@@ -58,22 +68,26 @@
   - `route.ts`
 
 - **Templates**:
+
   - I template sono simili ai layout perché avvolgono i layout figli o pagine.
   - Con i template, quando un utente naviga tra route che condividono lo stesso template, viene montata una nuova istanza del componente, gli elementi del DOM vengono ricreati, lo stato non viene preservato e gli effetti vengono ri-sincronizzati.
   - Un template può essere definito esportando un componente React da un file `template.js` o `template.tsx`.
   - Similmente ai layout, anche i template dovrebbero accettare una prop figlia che renderizzerà i nested segments nella route.
 
 - **File `loading.tsx`**:
+
   - Il file loading permette di mostrare uno stato di caricamento mentre l'utente naviga verso una nuova route, in modo da fargli capire che l'azione è stata presa in atto e in modo da far sembrare l'applicazione più responsive.
   - Next.js permette di creare layout condivisi che rimangono interattivi durante il caricamento di nuovi route segments, così gli utenti possono interagire anche mentre il contenuto principale sta per essere fetchato.
 
 - **File `error.tsx`**:
+
   - Il file error permette di avvolgere automaticamente un route segment e i suoi figli in un React Error Boundary.
   - Si possono creare UI per errori cucite su misura grazie alla gerarchia del file system, isolare errori tenendo il resto dell'applicazione funzionante, dare possibilità di riprendersi da un errore senza ricaricare interamente la pagina.
   - Gli errori salgono al più vicino error boundary genitore, quindi un file `error.tsx` tiene conto degli errori di tutti i suoi segments figli.
   - Posizionare più `error.tsx` a differenti livelli permette di ottenere una gestione degli errori più granulare.
 
 - **Route Parallele**:
+
   - Le route parallele sono un meccanismo di routing che permette di renderizzare simultaneamente più pagine con lo stesso layout.
   - Le route parallele sono definite utilizzando una funzionalità chiamata slots, che permette di strutturare il contenuto in maniera modulare.
   - Per definire uno slot, si precede il nome della cartella con una `@`, quindi ogni slot viene automaticamente passato come prop al suo relativo file `layout.tsx`.
@@ -82,6 +96,7 @@
   - In caso di ricaricamento della pagina, Next.js cerca un `default.tsx` internamente ad ogni slot perché quel file fornisce il contenuto di default che viene renderizzato nella UI, infatti se il file non è presente verrà renderizzato un 404.
 
 - **Intercettare le Route**:
+
   - Intercettare le route permette di intercettare o fermare il comportamento di routing di default per presentare un'altra vista o componente mentre si naviga nella UI, preservando la route per scenari come ad esempio ricaricamenti di pagina.
   - Intercettare le route è quindi utile per mostrare una route mentre si tiene il contesto della pagina corrente. Convenzioni per intercettare le route:
     - `(.)` Matchare segmenti sullo stesso livello.
@@ -90,11 +105,13 @@
     - `(...)` Matchare segmenti dalla cartella root dell'app.
 
 - **Gestori di Route**:
+
   - I gestori di route vengono eseguiti lato server e permettono di creare degli endpoint RESTful, in modo da dare il totale controllo sulla risposta.
   - Non c'è l'overhead dovuto alla creazione e configurazione di un server separato, ma è un ottimo modo per fare richieste ad API esterne.
   - I gestori di route sono l'equivalente delle API routes nel page router.
 
 - **Headers HTTP**:
+
   - Gli headers HTTP rappresentano i metadata associati con una richiesta e risposta delle API.
   - Gli headers delle richieste sono inviati dal client e contengono informazioni utili al server riguardanti la richiesta.
   - Tra gli headers delle richieste ci sono `User-Agent` che identifica OS e browser, `Accept` che indica il tipo di contenuti che client può processare, `Authorization` che serve al client per autenticarsi al server.
@@ -102,10 +119,12 @@
   - Tra gli headers delle risposte c'è `Content-Type` che indica al client il tipo di media della risposta.
 
 - **Cookies**:
+
   - I cookies sono piccoli pezzi di dati che un server invia al browser, il quale può salvarli e inviarli al server tramite successive richieste.
 
 - **Gestione del caching**:
-Quando si utilizza il metodo GET con l'oggetto `response`, i gestori di route sono cachati di default. Tuttavia, per evitare il caching, ci sono vari modi:
+  Quando si utilizza il metodo GET con l'oggetto `response`, i gestori di route sono cachati di default. Tuttavia, per evitare il caching, ci sono vari modi:
+
   - Configurare la dynamic mode scegliendo `force-dynamic` al posto di `auto`, in modo da eseguire il gestore ad ogni richiesta dell'utente.
   - Usare l'oggetto `request` con il metodo GET.
   - Usare funzioni dinamiche come `headers()` e `cookies()`.
@@ -133,6 +152,26 @@ Quando si utilizza il metodo GET con l'oggetto `response`, i gestori di route so
   Il code splitting si applica tramite `React.lazy` e permette di indicare specifici segmenti di codice come non immediatamente necessari per il caricamento, al fine di segnalare al bundler di segregarli in tags script separati.
 
 - **RSC (React Server Components)**:
-  RSC è un'architettura pensata per avere sia componenti client che server. L'app router in Next.js è costruito attorno a questa architettura. Rispetto ai classici componenti client, i componenti server riguardano codice che non viene mai scaricato dal client, riducendo quindi la dimensione del bundle, permettendo l'accesso diretto a risorse lato server, migliorando la sicurezza, migliorando l'efficienza del data fetching, permettendo caching dovuto al rendering lato server, velocizzando il caricamento della pagina e l'FCP (first contentful paint), migliorando la SEO e lo streaming in blocchi. I RSC non possono gestire direttamente clicks e interazioni.
+  RSC è un'architettura pensata per avere sia componenti client che server. L'app router in Next.js è costruito attorno a questa architettura. Rispetto ai classici componenti client, i componenti server riguardano codice che non viene mai scaricato dal client, riducendo quindi la dimensione del bundle, permettendo l'accesso diretto a risorse lato server, migliorando la sicurezza, migliorando l'efficienza del data fetching, permettendo caching dovuto al rendering lato server, velocizzando il caricamento della pagina e l'FCP (first contentful paint), migliorando la SEO e lo streaming in blocchi. I RSC non possono gestire direttamente clicks e interazioni. Mentre i server components sono renderizzati solo lato server, i client components sono renderizzati una volta lato server e poi lato client.
 
-Fatto fino al [video 49](https://www.youtube.com/watch?v=5h-e5hNKx-c&list=PLC3y8-rFHvwjOKd6gdf4QtV1uYNiQnruI&index=49) compreso.
+- **Strategie di Server Rendering**:
+
+  - Rendering statico:
+    - Strategia di default, usata dall'app router, che permette di buildare la pagina una volta, cacharla in una CDN e servirla a diversi client, migliorando le prestazioni.
+    - Consigliata per pagine di blog, prodotti di e-commerce, documentazione e pagine di marketing.
+    - Questa tecnica consiste nel generare pagine HTML in fase di build. Insieme all'HTML, per ogni componente viene creato un RSC payload e i pezzi di JavaScript vengono prodotti per l'hydration che avviene nel browser del client.
+    - Notare come in development mode, la pagina viene pre-renderizzata per ogni richiesta, mentre in produzione ciò avviene solo quando si esegue il comando di build. Navigando direttamente verso una route, viene servito il corrispondente file HTML, navigando verso una route a partire da un'altra route, la route viene creata lato client usando l'RSC payload e i pezzi di JavaScript, senza altre richieste verso il server.
+  - Rendering dinamico:
+    - Strategia che permette di renderizzare le route in fase di richiesta.
+    - Consigliata quando una route ha dati personalizzati per l'utente o contiene informazioni che si possono sapere solo in fase di richiesta, come cookies e parametri di ricerca dell'URL.
+    - Consigliata per siti di notizie, pagine di e-commerce personalizzate e feeds dei social media.
+    - Se durante il rendering ci si accorge di una funzione dinamica, Next.js passerà al rendering dinamico per l'intera route in fase di richiesta. Queste funzioni dinamiche sono cookies(), headers() e searchParams.
+  - Streaming:
+    - Strategia, integrata di default nell'app router di Next.js, che permette rendering di UI progressivi dal server.
+    - Il lavoro è diviso in pezzi e streammato al client appena è pronto. Questo permette agli utenti di vedere subito parti di pagina, prima che sia finito il rendering dell'intero contenuto.
+    - Lo streaming velocizza il caricamento iniziale della pagina e il rendering degli elementi della UI che si affidano a fetch lenti di dati, che altrimenti bloccherebbero il rendering dell'intera route.
+
+- **Prefetching**:
+  Tecnica usata per precaricare una route in background prima che l'utente ci navighi. Le route statiche vengono prefetchate e cachate di default.
+
+Fatto fino al [video 54](https://www.youtube.com/watch?v=9REGGiU8hck&list=PLC3y8-rFHvwjOKd6gdf4QtV1uYNiQnruI&index=54) compreso.
