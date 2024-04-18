@@ -174,4 +174,16 @@
 - **Prefetching**:
   Tecnica usata per precaricare una route in background prima che l'utente ci navighi. Le route statiche vengono prefetchate e cachate di default.
 
-Fatto fino al [video 54](https://www.youtube.com/watch?v=9REGGiU8hck&list=PLC3y8-rFHvwjOKd6gdf4QtV1uYNiQnruI&index=54) compreso.
+- **Pattern di composizione server e client**:
+
+  - Server components: sono ottimi per fetch di dati, accesso diretto a risorse backend, protezione di informazioni (come token di accesso e chiavi API), riduzione del JavaScript lato client tramite mantenimento di grandi dipendenze lato server.
+    - Codice solo lato server: certi moduli o funzioni che utilizzano più librerie e variabili d'ambiente e interagiscono con un database o processano informazioni confidenziali non dovrebbero finire nel client. Se ciò accadesse, potrebbe ingrandire la dimensione del bundle, oltre che esporre chiavi segrete, query del database e logiche sensibili.
+    - Pacchetto server-only: fornisce un errore in fase di build se si sta importanto in un client component un modulo che dovrebbe stare solo lato server.
+    - Pacchetti di terze parti: alcuni pacchetti che solitamente utilizzano funzionalità lato client non fanno ancora uso di use client, quindi potrebbero avere problemi se utilizzati in server components. Per risolvere ciò, si possono avvolgere questi componenti nei propri client components.
+    - Context providers: solitamente renderizzati sotto la root di un'applicazione per condividere globalmente stato e logica dell'applicazione, non sono supportati dai server components. Per risolvere ciò, si può creare un context e renderizzare il suo provider in un client component separato.
+  - Client components: sono ottimi per aggiungere interattività, gestire event listeners, gestire lo stato e gli effetti del ciclo di vita usando vari hooks, utilizzare API esclusive del browser, utilizzare hooks personalizzati e i componenti React Class. Si consiglia di tenerli più in basso possibile nel proprio albero di componenti perché, utilizzando use client, i loro componenti figli diventeranno anch'essi client components.
+    - Codice solo lato client: l'interazione con funzionalità specifiche del browser come ad esempio il DOM, l'oggetto window e il localStorage non sono disponibili lato server. Assicurarsi che questo codice sia eseguito solo lato client previene errori durante l'SSR.
+    - Pacchetto client-only: fornisce un errore in fase di build se si sta importanto in un server component un modulo che dovrebbe stare solo lato client.
+    - Siccome i client components sono renderizzati dopo dei server components, non si può importare un server component in un modulo client component siccome quest'ultimo farà una richiesta al server. Un workaround però consiste nel passare come prop il server component al client component.
+
+Fatto fino al [video 61](https://www.youtube.com/watch?v=-RRiLnKSj8k&list=PLC3y8-rFHvwjOKd6gdf4QtV1uYNiQnruI&index=61) compreso.
