@@ -186,4 +186,17 @@
     - Pacchetto client-only: fornisce un errore in fase di build se si sta importanto in un server component un modulo che dovrebbe stare solo lato client.
     - Siccome i client components sono renderizzati dopo dei server components, non si può importare un server component in un modulo client component siccome quest'ultimo farà una richiesta al server. Un workaround però consiste nel passare come prop il server component al client component.
 
-Fatto fino al [video 61](https://www.youtube.com/watch?v=-RRiLnKSj8k&list=PLC3y8-rFHvwjOKd6gdf4QtV1uYNiQnruI&index=61) compreso.
+- **Data fetching**:
+  - L'app router utilizza l'architettura RSC che permette di fetchare dati utilizzando sia server components che client components.
+    - Utilizzo dei server components: è vantaggioso perché questi hanno accesso diretto alle risorse lato server (come database o file system) e supportano varie configurazioni per caching e rivalidazione. Questo minimizza inoltre la necessità di calcoli lato client.
+      - L'architettura RSC nell'app router introduce il supporto per le keywords async e await nei componenti lato server. Questo permette di definire il componente come una funzione asincrona.
+      - Mentre in React si gestiscono questi stati creando variabili separate e renderizzando in modo condizionale la UI sulla base dei loro valori, per implementare uno stato di caricamento è sufficiente definire ed esportare un componente React in loading.tsx e per gestire errori è sufficiente definire ed esportare un componente React in error.tsx.
+      - Data Cache: di default, Next.js cacha i valori restituiti dalle fetch in una cache lato server che mantiene il risultato delle data fetch tra le richieste in arrivo. Questo serve per migliorare le prestazioni e ridurre i costi eliminando la necessità di ri-fetchare i dati dalla fonte ad ogni richiesta.
+        - I dati della cache si trovano in .next/cache/fetch-cache.
+        - La cache si può disabilitare per le singole data fetch utilizzando l'opzione cache no-store, ma una volta specificata questa opzione per una fetch, anche le richieste successive non saranno cachate, perciò è bene specificare le fetch che devono utilizzare la cache prima di quelle che non la devono utilizzare.
+        - Di default, Next.js applicherà il caching alle fetch che occorrono prima che le funzioni dinamiche (cookies(), headers(), searchParams) vengano utilizzate e non applicherà il caching alle fetch successive alle funzioni dinamiche.
+    - Utilizzo dei client components: solitamente viene gestito tramite librerie di terze parti, come ad esempio TanStack Query.
+
+
+
+Fatto fino al [video 68](https://www.youtube.com/watch?v=PlgDOhWFOno&list=PLC3y8-rFHvwjOKd6gdf4QtV1uYNiQnruI&index=68) compreso.
